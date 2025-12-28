@@ -1,0 +1,264 @@
+---
+import type { Lang } from "../content/i18n";
+import { copy } from "../content/i18n";
+
+const { lang, intent, title, text, cta } = Astro.props as {
+  lang: Lang;
+  intent: "buy" | "sell";
+  title: string;
+  text: string;
+  cta: string;
+};
+
+const t = copy[lang];
+
+const sectionBg =
+  "bg-gradient-to-b from-slate-950 via-slate-950/85 to-slate-950";
+
+
+const formCardClass =
+  "relative rounded-3xl border border-white/20 bg-white/10 backdrop-blur-xl p-8 " +
+  "shadow-[0_20px_60px_rgba(0,0,0,0.25)]";
+
+const labelClass = "text-sm text-white/90";
+const helperClass = "mt-1 text-xs text-white/60";
+
+const inputClass =
+  "mt-1 w-full rounded-2xl bg-white/15 border border-white/25 px-4 py-3 text-white placeholder-white/60 " +
+  "focus:outline-none focus:ring-2 focus:ring-white/40 focus:border-white/40 transition";
+
+const selectClass =
+  "mt-1 w-full rounded-2xl bg-white/15 border border-white/25 px-4 py-3 text-white " +
+  "focus:outline-none focus:ring-2 focus:ring-white/40 focus:border-white/40 transition";
+
+const textareaClass =
+  "mt-1 w-full rounded-2xl bg-white/15 border border-white/25 px-4 py-3 text-white placeholder-white/60 " +
+  "focus:outline-none focus:ring-2 focus:ring-white/40 focus:border-white/40 transition";
+
+const primaryBtnClass =
+  "rounded-2xl bg-white text-black px-6 py-3 font-semibold hover:opacity-90 transition shadow-lg";
+
+const chipClass =
+  "rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs text-white/80";
+---
+
+<section class={`relative overflow-hidden py-20 ${sectionBg}`}>
+  <!-- Background layers (depth) -->
+  <div class="absolute inset-0 pointer-events-none">
+  <!-- Soft sky-like top fade -->
+  <div class="absolute inset-0 bg-gradient-to-b from-sky-200/10 via-transparent to-slate-950/40"></div>
+  <!-- Warm sun hint (super subtle) -->
+  <div class="absolute -top-24 -left-24 h-[380px] w-[380px] rounded-full bg-amber-200/10 blur-[120px]"></div>
+  <!-- Sea hint on the right -->
+  <div class="absolute -bottom-24 -right-24 h-[420px] w-[420px] rounded-full bg-sky-300/10 blur-[140px]"></div>
+</div>
+
+
+  <div class="relative mx-auto max-w-6xl px-6">
+    <div class="grid md:grid-cols-2 gap-10 items-start">
+      <!-- Left: copy / info -->
+      <div class="relative">
+        <div class="flex flex-wrap gap-2">
+          <span class={chipClass}>
+            {intent === "sell" ? t.form.intentSell : t.form.intentBuy}
+          </span>
+          <span class={chipClass}>EN + ES</span>
+          <span class={chipClass}>🕒 24h</span>
+        </div>
+
+        <h2 class="mt-6 text-3xl md:text-4xl font-semibold tracking-tight">
+          {title}
+        </h2>
+
+        <p class="mt-4 text-white/80 leading-relaxed">
+          {text}
+        </p>
+
+        <p class={helperClass}>
+          {intent === "sell"
+            ? "Tip: Add approximate price and zone to get a faster valuation."
+            : "Tip: Budget + zone helps us match properties more accurately."}
+        </p>
+      </div>
+
+      <!-- Right: form wrapper with glow -->
+      <div class="relative">
+        <!-- Premium glow behind the form -->
+        <div
+          class="absolute -inset-10 md:-inset-16 rounded-full bg-white/10 blur-[120px] opacity-60 pointer-events-none"
+        ></div>
+
+        <form class={formCardClass} id={intent} data-intent={intent} novalidate>
+          <input type="hidden" name="intent" value={intent} />
+          <!-- Honeypot -->
+          <input type="text" name="hp" value="" class="hidden" tabindex="-1" autocomplete="off" />
+
+          <div class="grid grid-cols-1 gap-5">
+            <div class="grid sm:grid-cols-2 gap-5">
+              <label class={labelClass}>
+                {t.form.name}
+                <input name="name" required class={inputClass} autocomplete="name" />
+              </label>
+
+              <label class={labelClass}>
+                {t.form.phone}
+                <input name="phone" required class={inputClass} autocomplete="tel" />
+              </label>
+            </div>
+
+            <label class={labelClass}>
+              {t.form.email}
+              <input type="email" name="email" required class={inputClass} autocomplete="email" />
+            </label>
+
+            <div class="grid sm:grid-cols-2 gap-5">
+              <label class={labelClass}>
+                {t.form.lang}
+                <select name="preferredLang" class={selectClass}>
+                  <option value="en">{t.form.langEn}</option>
+                  <option value="es">{t.form.langEs}</option>
+                </select>
+              </label>
+
+              <label class={labelClass}>
+                {t.form.type}
+                <input
+                  name="propertyType"
+                  class={inputClass}
+                  placeholder="Apartment, villa…"
+                  autocomplete="off"
+                />
+              </label>
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-5">
+              <label class={labelClass}>
+                {t.form.zone}
+                <input
+                  name="zone"
+                  class={inputClass}
+                  placeholder="Los Boliches, Torreblanca…"
+                  autocomplete="off"
+                />
+              </label>
+
+              {intent === "sell" ? (
+                <label class={labelClass}>
+                  {t.form.price}
+                  <input
+                    name="estimatedPrice"
+                    class={inputClass}
+                    placeholder="€"
+                    inputmode="numeric"
+                    autocomplete="off"
+                  />
+                </label>
+              ) : (
+                <label class={labelClass}>
+                  {t.form.budget}
+                  <input
+                    name="budget"
+                    class={inputClass}
+                    placeholder="€"
+                    inputmode="numeric"
+                    autocomplete="off"
+                  />
+                </label>
+              )}
+            </div>
+
+            {intent === "buy" && (
+              <label class={labelClass}>
+                {t.form.usage}
+                <select name="usage" class={selectClass}>
+                  <option value="home">{t.form.usageHome}</option>
+                  <option value="investment">{t.form.usageInvest}</option>
+                </select>
+              </label>
+            )}
+
+            <label class={labelClass}>
+              {t.form.message}
+              <textarea name="message" rows="3" class={textareaClass}></textarea>
+            </label>
+
+            <label class="flex items-start gap-3 text-sm text-white/85">
+              <input
+                type="checkbox"
+                name="consent"
+                required
+                class="mt-1 h-4 w-4 rounded border-white/30 bg-white/10"
+              />
+              <span>{t.form.consent}</span>
+            </label>
+
+            <button type="submit" class={primaryBtnClass}>
+              {cta}
+            </button>
+
+            <p class="text-sm text-white/80" data-status></p>
+          </div>
+
+          <div class="mt-6 text-xs text-white/60">
+            We only use your details to respond to your request. No spam.
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Client-side submit (simple) -->
+  <script is:inline>
+    const section = document.currentScript?.previousElementSibling;
+    const form = section?.querySelector("form");
+    if (!form) throw new Error("LeadForm: form not found");
+
+    const statusEl = form.querySelector("[data-status]");
+    const btn = form.querySelector("button[type='submit']");
+
+    function setStatus(msg) {
+      if (statusEl) statusEl.textContent = msg || "";
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      setStatus("");
+      btn.disabled = true;
+
+      const fd = new FormData(form);
+      const body = Object.fromEntries(fd.entries());
+
+      // Honeypot
+      if (body.hp && String(body.hp).trim().length > 0) {
+        btn.disabled = false;
+        return;
+      }
+
+      // Minimal client validation
+      if (!body.name || !body.email || !body.phone || !body.consent) {
+        setStatus("Please fill required fields.");
+        btn.disabled = false;
+        return;
+      }
+
+      try {
+        setStatus("Sending...");
+        const res = await fetch("/api/lead.json", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok || !json.ok) throw new Error(json?.error || "failed");
+
+        setStatus("Done! We'll reach out shortly.");
+        form.reset();
+      } catch (err) {
+        setStatus("Something went wrong. Please try again or contact us via WhatsApp.");
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  </script>
+</section>

@@ -1,0 +1,24 @@
+---
+import "../styles/global.css";
+
+const {
+  title = "Costa Strand Properties — Fuengirola",
+  description = "Luxury real estate landing page for Fuengirola & Costa del Sol.",
+  lang = "en",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index,follow" />
+    <link rel="icon" href="/favicon.svg" />
+  </head>
+  <body class="bg-black text-white antialiased">
+    <slot />
+  </body>
+</html>

@@ -1,14 +1,65 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-import "../styles/global.css";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import type { Lang } from "../content/i18n";
+import { copy } from "../content/i18n";
+
+import Hero from "../components/Hero.astro";
+import TrustBar from "../components/TrustBar.astro";
+import LeadForm from "../components/LeadForm.astro";
+import Features from "../components/Features.astro";
+import LocationContact from "../components/LocationContact.astro";
+import Footer from "../components/Footer.astro";
+
+const langParam = Astro.url.searchParams.get("lang");
+const lang: Lang = (langParam === "es" ? "es" : "en");
+
+const siteName = import.meta.env.SITE_NAME ?? "Costa Strand Properties";
+const phone = import.meta.env.OFFICE_PHONE ?? "+34 000 00 00 00";
+const whatsappPhone = import.meta.env.WHATSAPP_PHONE ?? "34000000000";
+const address = import.meta.env.OFFICE_ADDRESS ?? "Fuengirola";
+
+const t = copy[lang];
 ---
 
+<BaseLayout
+  lang={lang}
+  title={`${siteName} — ${import.meta.env.OFFICE_CITY ?? "Fuengirola"}`}
+  description={t.hero.sub}
+>
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
----
+  <Hero lang={lang} siteName={siteName} />
+  <TrustBar lang={lang} />
 
-<Layout>
-	<Welcome />
-</Layout>
+  <section class="mx-auto max-w-6xl px-6 pt-16">
+    <div class="flex items-center gap-4 text-sm text-white/70">
+      <a href="#sell" class="hover:text-white underline underline-offset-4">{t.nav.sell}</a>
+      <a href="#buy" class="hover:text-white underline underline-offset-4">{t.nav.buy}</a>
+      <a href="#contact" class="hover:text-white underline underline-offset-4">{t.nav.contact}</a>
+    </div>
+  </section>
+
+  <div id="sell">
+    <LeadForm
+      lang={lang}
+      intent="sell"
+      title={t.sell.title}
+      text={t.sell.text}
+      cta={t.sell.cta}
+    />
+  </div>
+
+  <div id="buy">
+    <LeadForm
+      lang={lang}
+      intent="buy"
+      title={t.buy.title}
+      text={t.buy.text}
+      cta={t.buy.cta}
+    />
+  </div>
+
+  <Features lang={lang} />
+
+  <LocationContact lang={lang} phone={phone} whatsappPhone={whatsappPhone} address={address} />
+  <Footer lang={lang} siteName={siteName} />
+</BaseLayout>

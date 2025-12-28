@@ -1,0 +1,16 @@
+---
+import type { Lang } from "../content/i18n";
+import { copy } from "../content/i18n";
+const { lang, siteName } = Astro.props as { lang: Lang; siteName: string };
+const t = copy[lang];
+---
+
+<footer class="border-t border-white/10">
+  <div class="mx-auto max-w-6xl px-6 py-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 text-sm text-white/70">
+    <div>© {new Date().getFullYear()} {siteName}. {t.footer.rights}</div>
+    <div class="flex gap-4">
+      <a class="hover:text-white" href="/legal/privacy">{t.footer.privacy}</a>
+      <a class="hover:text-white" href="/legal/cookies">{t.footer.cookies}</a>
+    </div>
+  </div>
+</footer>

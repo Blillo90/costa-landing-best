@@ -1,0 +1,137 @@
+---
+import type { Lang } from "../content/i18n";
+import { copy } from "../content/i18n";
+import LangToggle from "./LangToggle.astro";
+
+const {
+  lang,
+  siteName,
+  navLinks = true,
+} = Astro.props as {
+  lang: Lang;
+  siteName: string;
+  navLinks?: boolean;
+};
+
+const t = copy[lang];
+
+// Ajusta aquí si quieres usar una imagen local:
+//const heroImage = "/images/hero.webp";
+
+// Si quieres una URL temporal mientras tanto:
+//const heroImage = "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=2400&q=70";
+
+const heroImage =
+  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2400&q=75";
+
+//const heroImage =
+  "https://images.unsplash.com/photo-1502673530728-f79b4cab31b1?auto=format&fit=crop&w=2400&q=75";
+
+
+---
+
+<header class="relative overflow-hidden">
+  <!-- Background -->
+  <div class="absolute inset-0">
+    <img
+      src={heroImage}
+      alt=""
+      class="h-full w-full object-cover scale-[1.02] saturate-90 contrast-105"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <!-- Overlays -->
+    <div class="absolute inset-0 bg-black/25"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/40"></div>
+  </div>
+
+  <!-- Top bar -->
+  <div class="relative mx-auto max-w-6xl px-6 pt-6">
+    <div class="flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <!-- Logo placeholder -->
+        <div class="h-10 w-10 rounded-2xl bg-white/10 border border-white/15 grid place-items-center">
+          <span class="text-sm font-semibold">CS</span>
+        </div>
+        <div class="leading-tight">
+          <div class="text-sm font-medium text-white">{siteName}</div>
+          <div class="text-xs text-white/65">Fuengirola Office</div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        {navLinks && (
+          <nav class="hidden md:flex items-center gap-5 text-sm text-white/80">
+            <a href="#sell" class="hover:text-white">SELL</a>
+            <a href="#buy" class="hover:text-white">BUY</a>
+            <a href="#contact" class="hover:text-white">CONTACT</a>
+          </nav>
+        )}
+        <LangToggle lang={lang} />
+      </div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="relative mx-auto max-w-6xl px-6 pb-20 pt-16 md:pt-24">
+    <div class="max-w-3xl">
+      <p class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs text-white/80">
+        <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
+        {t.hero.note}
+      </p>
+
+      <h1 class="mt-6 text-4xl md:text-6xl font-semibold tracking-tight leading-[1.05]">
+        {t.hero.h1}
+      </h1>
+
+      <p class="mt-5 text-base md:text-lg text-white/80 leading-relaxed">
+        {t.hero.sub}
+      </p>
+
+      <!-- CTAs -->
+      <div class="mt-9 flex flex-col sm:flex-row gap-3">
+        <a
+          href="#sell"
+          class="rounded-2xl bg-white text-black px-6 py-3 font-semibold hover:opacity-90 transition"
+        >
+          {t.hero.ctaSell}
+        </a>
+        <a
+          href="#buy"
+          class="rounded-2xl border border-white/25 bg-white/0 px-6 py-3 font-semibold text-white hover:border-white/60 hover:bg-white/5 transition"
+        >
+          {t.hero.ctaBuy}
+        </a>
+      </div>
+
+      <!-- Trust chips -->
+      <div class="mt-10 flex flex-wrap gap-3 text-sm text-white/80">
+        <span class="rounded-full border border-white/15 bg-white/5 px-4 py-2">⭐ 4.8 Google</span>
+        <span class="rounded-full border border-white/15 bg-white/5 px-4 py-2">📍 Fuengirola office</span>
+        <span class="rounded-full border border-white/15 bg-white/5 px-4 py-2">🕒 Reply in 24h</span>
+      </div>
+    </div>
+
+    <!-- Right side "glass" card (desktop) -->
+    <div class="hidden lg:block absolute right-6 top-1/2 -translate-y-1/2 w-[360px]">
+      <div class="rounded-3xl border border-white/15 bg-white/5 backdrop-blur-xl p-6 shadow-[0_20px_80px_rgba(0,0,0,0.55)]">
+        <div class="text-sm text-white/70">Quick actions</div>
+        <div class="mt-4 grid gap-3">
+          <a href="#sell" class="rounded-2xl bg-white text-black px-4 py-3 font-semibold hover:opacity-90 transition">
+            {t.sell.cta}
+          </a>
+          <a href="#buy" class="rounded-2xl border border-white/20 px-4 py-3 font-semibold hover:border-white/60 hover:bg-white/5 transition">
+            {t.buy.cta}
+          </a>
+          <a href="#contact" class="rounded-2xl border border-white/20 px-4 py-3 font-semibold hover:border-white/60 hover:bg-white/5 transition">
+            Contact
+          </a>
+        </div>
+
+        <div class="mt-6 text-xs text-white/60">
+          Tip: This page is designed to convert visitors into qualified leads.
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

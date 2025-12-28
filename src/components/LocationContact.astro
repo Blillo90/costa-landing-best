@@ -1,0 +1,40 @@
+---
+import type { Lang } from "../content/i18n";
+import { copy } from "../content/i18n";
+
+const { lang, phone, whatsappPhone, address } = Astro.props as {
+  lang: Lang;
+  phone: string;
+  whatsappPhone: string;
+  address: string;
+};
+
+const t = copy[lang];
+const waLink = `https://wa.me/${whatsappPhone}`;
+const telLink = `tel:${phone.replace(/\s+/g, "")}`;
+---
+
+<section id="contact" class="border-t border-white/10 bg-black">
+  <div class="mx-auto max-w-6xl px-6 py-16 grid md:grid-cols-2 gap-10 items-start">
+    <div>
+      <h2 class="text-3xl font-semibold">{t.contact.title}</h2>
+      <div class="mt-6 space-y-3 text-white/80">
+        <div><span class="text-white/60">{t.contact.addressLabel}:</span> {address}</div>
+        <div class="flex gap-3 mt-4">
+          <a class="rounded-2xl bg-white text-black px-5 py-3 font-medium hover:opacity-90" href={telLink}>{t.contact.call}</a>
+          <a class="rounded-2xl border border-white/40 px-5 py-3 font-medium hover:border-white/70" href={waLink} target="_blank" rel="noreferrer">{t.contact.whatsapp}</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="rounded-2xl overflow-hidden border border-white/10 bg-white/5">
+      <iframe
+        title="map"
+        class="w-full h-[340px]"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.google.com/maps?q=Fuengirola&output=embed"
+      ></iframe>
+    </div>
+  </div>
+</section>

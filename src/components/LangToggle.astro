@@ -1,0 +1,15 @@
+---
+import type { Lang } from "../content/i18n";
+const { lang } = Astro.props as { lang: Lang };
+---
+
+<div class="flex items-center gap-2 text-sm">
+  <a
+    href="?lang=en"
+    class={`px-3 py-1 rounded-full border ${lang === "en" ? "bg-white text-black" : "border-white/30 text-white/80 hover:border-white/60"}`}
+  >EN</a>
+  <a
+    href="?lang=es"
+    class={`px-3 py-1 rounded-full border ${lang === "es" ? "bg-white text-black" : "border-white/30 text-white/80 hover:border-white/60"}`}
+  >ES</a>
+</div>
