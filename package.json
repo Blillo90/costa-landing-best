@@ -6,7 +6,12 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "db:reset": "docker compose down -v && docker compose up -d",
+    "db:schema": "docker compose exec -T postgres psql -U astro -d leads_db < db/schema.sql"
   },
   "dependencies": {
     "@astrojs/vercel": "^9.0.2",
