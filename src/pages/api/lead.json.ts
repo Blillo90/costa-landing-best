@@ -1,3 +1,5 @@
+export const prerender = false;
+
 import type { APIRoute } from "astro";
 import { sql } from "@vercel/postgres";
 import { z } from "zod";
